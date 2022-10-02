@@ -65,6 +65,17 @@ public class ThicknessChecker : MonoBehaviour
                         scanEndPosition = hitPosition;
                     }
 
+                } 
+                else
+                {
+                    //https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+                    Vector3 reflectionDirection = direction - (2 * Vector3.Dot(direction, hit.normal) * hit.normal);
+                    this.reflectionLine.enabled = true;
+
+                    float totalLength = (mousePosition - startPosition).magnitude;
+
+                    reflectionEndPosition = hitPosition + (reflectionDirection.normalized * (totalLength - hit.distance));
+                    scanEndPosition = hitPosition;
                 }
 
 
