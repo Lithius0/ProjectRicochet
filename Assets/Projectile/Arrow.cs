@@ -30,7 +30,11 @@ public class Arrow : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, velocity.normalized, out hit, velocity.magnitude * Time.fixedDeltaTime))
             {
-                
+                if (hit.collider.gameObject.GetComponent<ChetSceneManager>())
+                {
+                    hit.collider.gameObject.GetComponent<ChetSceneManager>().OnArrowHit();
+                }
+
                 //hit.collider should always return true since raycasts scans for colliders.
                 Armor armorHit = hit.collider.gameObject.GetComponent<Armor>();
 
