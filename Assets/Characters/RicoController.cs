@@ -19,9 +19,6 @@ public class RicoController : MonoBehaviour
     [SerializeField] const float minPower = 10f;
     private float power = 0;
 
-    [SerializeField] float debounceTime = 0.1f;
-    private float lastFiredTime = -1000f;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +27,7 @@ public class RicoController : MonoBehaviour
 
     void OnLaunchArrow(InputValue value)
     {
-        if (value.isPressed && (Time.time - lastFiredTime) > debounceTime)
+        if (value.isPressed)
         {
             GameObject newObject = Instantiate(arrowPrefab, gameObject.transform.position, Quaternion.identity);
             Arrow newArrow = newObject.GetComponent<Arrow>();
@@ -40,7 +37,6 @@ public class RicoController : MonoBehaviour
             this.targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             //Need to get rid of Z
             this.targetPosition = new Vector3(this.targetPosition.x, this.targetPosition.y, 0); 
-            this.lastFiredTime = Time.time;
 
             this.powerTextDisplay.GetComponent<TextMeshProUGUI>().enabled = true; ;
             newArrow.Point(targetPosition - gameObject.transform.position);
@@ -79,7 +75,7 @@ public class RicoController : MonoBehaviour
     {
         if (this.aiming)
         {
-            const float powerScale = 5f;
+            const float powerScale = 10f;
 
             float scaledMinPower = minPower / powerScale;
             float scaledMaxPower = maxPower / powerScale;
@@ -113,7 +109,7 @@ public class RicoController : MonoBehaviour
             Debug.DrawRay(gameObject.transform.position, projectedDirection, Color.red);
         }
 
-        followMouseComponent.enabled = !aiming && (Time.time - lastFiredTime) > debounceTime;
+        followMouseComponent.enabled = !aiming;
 
     }
 }
